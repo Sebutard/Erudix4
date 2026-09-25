@@ -1,39 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Erudix — micro-sessions d’apprentissage courtes et sans distraction." />
-    <title>Erudix</title>
-    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/reset.css" />
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/app.css" />
-  </head>
-  <body>
-    <script src="js/data/demo-profile.js"></script>
-    <script src="js/data/demo-resources.js"></script>
-    <script src="js/data/demo-sessions.js"></script>
-    <script src="js/state.js"></script>
-    <script src="js/services/storage-service.js"></script>
-    <script src="js/services/duration-adjuster.js"></script>
-    <script src="js/services/session-generator.js"></script>
-    <script src="js/services/source-service.js"></script>
-    <script src="js/components/app-shell.js"></script>
-    <script src="js/components/progress-bar.js"></script>
-    <script src="js/components/duration-selector.js"></script>
-    <script src="js/components/resource-card.js"></script>
-    <script src="js/components/timer.js"></script>
-    <script src="js/components/quiz.js"></script>
-    <script src="js/components/toast.js"></script>
-    <script src="js/screens/onboarding-screen.js"></script>
-    <script src="js/screens/home-screen.js"></script>
-    <script src="js/screens/learning-screen.js"></script>
-    <script src="js/screens/summary-screen.js"></script>
-    <script src="js/screens/history-screen.js"></script>
-    <script src="js/screens/profile-screen.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Erudix — transforme tes temps morts en micro-sessions d'apprentissage.">
+  <title>Erudix — Apprendre autrement</title>
+  <style>
+    :root {
+      --bg: #f5f8f5;
+      --surface: #ffffff;
+      --text: #1d2a24;
+      --muted: #60736a;
+      --accent: #477a68;
+      --accent-dark: #315b4b;
+      --soft: #e2efe8;
+      --border: #dce8e0;
+      --shadow: 0 16px 40px rgba(29, 42, 36, .10);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background: linear-gradient(180deg, var(--bg), #edf3ef);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .app { width: min(100%, 760px); margin: 0 auto; padding: 24px 16px 40px; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.25rem; }
+    .logo { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: white; background: var(--accent); font-weight: 900; }
+    .badge { color: var(--accent-dark); background: var(--soft); border-radius: 999px; padding: 8px 12px; font-size: .78rem; font-weight: 700; }
+    .hero { margin-bottom: 22px; }
+    .eyebrow { color: var(--accent-dark); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { max-width: 620px; margin: 10px 0; font-size: clamp(2rem, 8vw, 3.5rem); line-height: 1.08; letter-spacing: -.045em; }
+    h2 { margin: 0 0 8px; font-size: 1.25rem; }
+    p { margin: 0; }
+    .muted { color: var(--muted); }
+    .card { padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; color: var(--muted); font-size: .9rem; font-weight: 700; }
+    input, select { width: 100%; padding: 14px 15px; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 13px; outline: none; }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--soft); }
+    .durations { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .duration { padding: 12px 6px; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-weight: 700; }
+    .duration.active { color: var(--accent-dark); background: var(--soft); border-color: var(--accent); }
+    .primary { width: 100%; padding: 15px 18px; color: white; background: var(--accent); border: 0; border-radius: 14px; font-weight: 800; }
+    .primary:hover { background: var(--accent-dark); }
+    .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .suggestion { padding: 8px 11px; color: var(--accent-dark); background: var(--soft); border: 0; border-radius: 999px; font-size: .85rem; }
+    .result { display: none; margin-top: 18px; padding: 18px; background: var(--soft); border-radius: 18px; }
+    .result.visible { display: block; }
+    .result strong { display: block; margin-bottom: 6px; }
+    footer { margin-top: 20px; color: var(--muted); text-align: center; font-size: .82rem; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #101d1a; --surface: #162821; --text: #edf5f1; --muted: #b7c9c2; --soft: #1e3930; --border: #2b473d; --shadow: 0 16px 40px rgba(0,0,0,.22); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand"><span class="logo">E</span><span>Erudix</span></div>
+      <span class="badge">V0 · Prototype</span>
+    </header>
+
+    <section class="hero" aria-labelledby="title">
+      <div class="eyebrow">Apprendre sans scroller</div>
+      <h1 id="title">Transforme tes temps morts en connaissances.</h1>
+      <p class="muted">Une micro-session courte, ciblée et sans flux infini — adaptée au temps dont tu disposes.</p>
+    </section>
+
+    <section class="card" aria-labelledby="session-title">
+      <h2 id="session-title">Créer une session</h2>
+      <p class="muted" style="margin-bottom: 20px;">Choisis un sujet et le temps que tu souhaites investir.</p>
+
+      <div class="form-group">
+        <label for="topic">Sujet à approfondir</label>
+        <input id="topic" type="text" value="Histoire de la démocratie" placeholder="Ex. : climat, philosophie, espace...">
+        <div class="suggestions" aria-label="Sujets suggérés">
+          <button class="suggestion" type="button" data-topic="Histoire de la démocratie">Histoire</button>
+          <button class="suggestion" type="button" data-topic="Les énergies renouvelables">Sciences</button>
+          <button class="suggestion" type="button" data-topic="Montaigne et l’art de vivre">Philosophie</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Temps disponible</label>
+        <div class="durations" role="group" aria-label="Durée de la session">
+          <button class="duration" type="button" data-duration="5">5 min</button>
+          <button class="duration active" type="button" data-duration="10">10 min</button>
+          <button class="duration" type="button" data-duration="15">15 min</button>
+          <button class="duration" type="button" data-duration="30">30 min</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="context">Contexte</label>
+        <select id="context">
+          <option>J’attends mon bus</option>
+          <option>Salle d’attente</option>
+          <option>Pause café</option>
+          <option>Temps libre</option>
+        </select>
+      </div>
+
+      <button class="primary" id="start" type="button">Lancer ma session</button>
+
+      <div class="result" id="result" role="status" aria-live="polite">
+        <strong id="result-title">Ta session est prête.</strong>
+        <span id="result-text"></span>
+      </div>
+    </section>
+
+    <footer>Prototype universitaire · Les contenus affichés sont des données de démonstration.</footer>
+  </main>
+
+  <script>
+    (function () {
+      const topicInput = document.getElementById('topic');
+      const result = document.getElementById('result');
+      const resultTitle = document.getElementById('result-title');
+      const resultText = document.getElementById('result-text');
+      let duration = 10;
+
+      document.querySelectorAll('[data-duration]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          duration = Number(button.dataset.duration);
+          document.querySelectorAll('[data-duration]').forEach(function (item) { item.classList.remove('active'); });
+          button.classList.add('active');
+        });
+      });
+
+      document.querySelectorAll('[data-topic]').forEach(function (button) {
+        button.addEventListener('click', function () { topicInput.value = button.dataset.topic; });
+      });
+
+      document.getElementById('start').addEventListener('click', function () {
+        const topic = topicInput.value.trim() || 'un sujet au choix';
+        resultTitle.textContent = 'Ta session est prête.';
+        resultText.textContent = 'Nous allons explorer « ' + topic + ' » pendant ' + duration + ' minutes, avec une introduction, un approfondissement et une ouverture.';
+        result.classList.add('visible');
+        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }());
+  </script>
+</body>
 </html>
