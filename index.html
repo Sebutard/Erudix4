@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Erudix — transforme tes temps morts en micro-sessions d'apprentissage.">
-  <title>Erudix V1 — Apprendre autrement</title>
+  <title>Erudix V2 — Apprendre autrement</title>
   <style>
-    :root { --bg:#f5f8f5; --surface:#fff; --text:#1d2a24; --muted:#60736a; --accent:#477a68; --accent-dark:#315b4b; --soft:#e2efe8; --border:#dce8e0; --shadow:0 16px 40px rgba(29,42,36,.1); }
+    :root { --bg:#f5f8f5; --surface:#fff; --text:#1d2a24; --muted:#60736a; --accent:#477a68; --accent-dark:#315b4b; --soft:#e2efe8; --border:#dce8e0; --danger:#b84c52; --shadow:0 16px 40px rgba(29,42,36,.1); }
     * { box-sizing:border-box; }
     body { margin:0; min-width:320px; color:var(--text); background:linear-gradient(180deg,var(--bg),#edf3ef); font-family:Arial,Helvetica,sans-serif; line-height:1.5; }
     button,input { font:inherit; } button { cursor:pointer; }
@@ -15,52 +15,75 @@
     .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.25rem; }
     .logo { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; color:#fff; background:var(--accent); font-weight:900; }
     .badge { color:var(--accent-dark); background:var(--soft); border-radius:999px; padding:8px 12px; font-size:.78rem; font-weight:700; }
+    .screen { display:none; animation:appear .2s ease; } .screen.active { display:block; }
+    @keyframes appear { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
     .hero { margin-bottom:22px; } .eyebrow { color:var(--accent-dark); font-size:.78rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
-    h1 { max-width:620px; margin:10px 0; font-size:clamp(2rem,8vw,3.5rem); line-height:1.08; letter-spacing:-.045em; } h2 { margin:0 0 8px; font-size:1.25rem; } p { margin:0; } .muted { color:var(--muted); }
+    h1 { max-width:620px; margin:10px 0; font-size:clamp(2rem,8vw,3.5rem); line-height:1.08; letter-spacing:-.045em; } h2 { margin:0 0 8px; font-size:1.35rem; } h3 { margin:0 0 12px; font-size:1.05rem; } p { margin:0; } .muted { color:var(--muted); }
     .card { padding:22px; background:var(--surface); border:1px solid var(--border); border-radius:24px; box-shadow:var(--shadow); }
     .form-group { margin-bottom:20px; } label { display:block; margin-bottom:8px; color:var(--muted); font-size:.9rem; font-weight:700; }
     input { width:100%; padding:14px 15px; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:13px; outline:none; }
     input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--soft); }
+    .two-fields { display:grid; gap:16px; }
+    .pill-group { display:flex; flex-wrap:wrap; gap:9px; }
+    .pill { padding:10px 13px; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:999px; transition:all .15s ease; }
+    .pill:hover { border-color:var(--accent); } .pill.selected { color:var(--accent-dark); background:var(--soft); border-color:var(--accent); font-weight:700; }
+    .progress { height:8px; margin-bottom:22px; overflow:hidden; background:var(--soft); border-radius:999px; } .progress span { display:block; width:50%; height:100%; background:var(--accent); border-radius:inherit; }
     .durations { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; } .duration { padding:12px 6px; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:12px; font-weight:700; }
     .duration.active { color:var(--accent-dark); background:var(--soft); border-color:var(--accent); }
     .primary { width:100%; padding:15px 18px; color:#fff; background:var(--accent); border:0; border-radius:14px; font-weight:800; } .primary:hover { background:var(--accent-dark); }
+    .secondary { padding:12px 16px; color:var(--text); background:var(--surface); border:1px solid var(--border); border-radius:12px; font-weight:700; }
     .result { display:none; margin-top:18px; padding:18px; background:var(--soft); border-radius:18px; } .result.visible { display:block; } .result strong { display:block; margin-bottom:6px; }
+    .error { display:none; margin-top:8px; color:var(--danger); font-size:.88rem; } .error.visible { display:block; }
     footer { margin-top:20px; color:var(--muted); text-align:center; font-size:.82rem; }
+    @media (min-width:600px) { .two-fields { grid-template-columns:1fr 1fr; } }
     @media (prefers-color-scheme:dark) { :root { --bg:#101d1a; --surface:#162821; --text:#edf5f1; --muted:#b7c9c2; --soft:#1e3930; --border:#2b473d; --shadow:0 16px 40px rgba(0,0,0,.22); } }
   </style>
 </head>
 <body>
   <main class="app">
-    <header><div class="brand"><span class="logo">E</span><span>Erudix</span></div><span class="badge">V1 · Prototype</span></header>
-    <section class="hero" aria-labelledby="title"><div class="eyebrow">Apprendre sans scroller</div><h1 id="title">Transforme tes temps morts en connaissances.</h1><p class="muted">Une micro-session courte, ciblée et sans flux infini — adaptée au temps dont tu disposes.</p></section>
-    <section class="card" aria-labelledby="session-title"><h2 id="session-title">Créer une session</h2><p class="muted" style="margin-bottom:20px;">Écris ce que tu souhaites apprendre. Cette demande servira de requête au futur agent IA d’Erudix.</p>
-      <div class="form-group"><label for="topic">Sujet à approfondir</label><input id="topic" type="text" value="" placeholder="Ex. : explique-moi les origines de la démocratie..."></div>
-      <div class="form-group"><label>Temps disponible</label><div class="durations" role="group" aria-label="Durée de la session"><button class="duration" type="button" data-duration="5">5 min</button><button class="duration active" type="button" data-duration="10">10 min</button><button class="duration" type="button" data-duration="15">15 min</button><button class="duration" type="button" data-duration="30">30 min</button></div></div>
-      <button class="primary" id="start" type="button">Lancer ma session</button>
-      <div class="result" id="result" role="status" aria-live="polite"><strong id="result-title">Ta demande est prête.</strong><span id="result-text"></span></div>
+    <header><div class="brand"><span class="logo">E</span><span>Erudix</span></div><span class="badge">V2 · Prototype</span></header>
+
+    <section id="profile-screen" class="screen active" aria-labelledby="profile-title">
+      <div class="hero"><div class="eyebrow">Première étape</div><h1 id="profile-title">Construisons ton espace d’apprentissage.</h1><p class="muted">Quelques informations pour personnaliser les futures sessions proposées par Erudix.</p></div>
+      <div class="card">
+        <div class="progress" aria-label="Étape 1 sur 2"><span></span></div>
+        <div class="two-fields form-group">
+          <div><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" placeholder="Ton prénom ou pseudo"></div>
+          <div><label for="mail">Mail</label><input id="mail" name="mail" type="email" autocomplete="email" placeholder="ton@email.com"></div>
+        </div>
+        <div class="form-group"><h3>Quels sujets t’intéressent ?</h3><p class="muted" style="margin-bottom:12px;font-size:.9rem;">Sélectionne une ou plusieurs catégories.</p><div class="pill-group" id="interest-pills"></div></div>
+        <div class="form-group"><label for="regions">Pays ou régions du monde qui t’intéressent</label><input id="regions" type="text" placeholder="Ex. : Japon, Brésil, Méditerranée..."></div>
+        <div class="form-group"><h3>Régions suggérées</h3><div class="pill-group" id="region-pills"></div></div>
+        <p id="profile-error" class="error" role="alert">Renseigne au minimum un username et une adresse mail valide.</p>
+        <button class="primary" id="continue" type="button">Continuer</button>
+      </div>
     </section>
-    <footer>V1 · Prototype universitaire · Les contenus seront proposés par un agent IA dans une prochaine version.</footer>
+
+    <section id="request-screen" class="screen" aria-labelledby="request-title">
+      <div class="hero"><div class="eyebrow">Deuxième étape</div><h1 id="request-title">Transforme tes temps morts en connaissances.</h1><p class="muted">Écris ce que tu souhaites apprendre. Cette demande servira de requête au futur agent IA d’Erudix.</p></div>
+      <div class="card">
+        <h2>Créer une session</h2>
+        <div class="form-group"><label for="topic">Sujet à approfondir</label><input id="topic" type="text" placeholder="Ex. : explique-moi les origines de la démocratie..."></div>
+        <div class="form-group"><label>Temps disponible</label><div class="durations" role="group" aria-label="Durée de la session"><button class="duration" type="button" data-duration="5">5 min</button><button class="duration active" type="button" data-duration="10">10 min</button><button class="duration" type="button" data-duration="15">15 min</button><button class="duration" type="button" data-duration="30">30 min</button></div></div>
+        <button class="primary" id="start" type="button">Lancer ma session</button>
+        <div class="result" id="result" role="status" aria-live="polite"><strong>Ta demande est prête.</strong><span id="result-text"></span></div>
+        <button class="secondary" id="back" type="button" style="width:100%;margin-top:12px;">Modifier mon profil</button>
+      </div>
+    </section>
+    <footer>V2 · Prototype universitaire · Les contenus seront proposés par un agent IA dans une prochaine version.</footer>
   </main>
+
   <script>
     (function () {
-      const topicInput = document.getElementById('topic');
-      const result = document.getElementById('result');
-      const resultText = document.getElementById('result-text');
-      let duration = 10;
-      document.querySelectorAll('[data-duration]').forEach(function (button) {
-        button.addEventListener('click', function () {
-          duration = Number(button.dataset.duration);
-          document.querySelectorAll('[data-duration]').forEach(function (item) { item.classList.remove('active'); });
-          button.classList.add('active');
-        });
-      });
-      document.getElementById('start').addEventListener('click', function () {
-        const request = topicInput.value.trim();
-        if (!request) { topicInput.focus(); result.classList.remove('visible'); return; }
-        resultText.textContent = 'Requête enregistrée : « ' + request + ' ». Une future version de l’agent IA préparera une session de ' + duration + ' minutes à partir de cette demande.';
-        result.classList.add('visible');
-        result.scrollIntoView({ behavior:'smooth', block:'nearest' });
-      });
+      const interests = ['Arts', 'Littérature', 'Sports', 'Écologie', 'Langues', 'Religions', 'Politique', 'Santé', 'Sciences sociales'];
+      const regions = ['Amérique latine', 'Afrique', 'Europe', 'Amérique du Nord', 'Asie', 'Moyen-Orient', 'Océanie'];
+      const selectedInterests = new Set(); const selectedRegions = new Set();
+      const makePills = (items, target, selected) => items.forEach(item => { const button = document.createElement('button'); button.type='button'; button.className='pill'; button.textContent=item; button.addEventListener('click', () => { selected.has(item) ? selected.delete(item) : selected.add(item); button.classList.toggle('selected', selected.has(item)); }); target.appendChild(button); });
+      makePills(interests, document.getElementById('interest-pills'), selectedInterests); makePills(regions, document.getElementById('region-pills'), selectedRegions);
+      document.getElementById('continue').addEventListener('click', () => { const username=document.getElementById('username').value.trim(); const mail=document.getElementById('mail').value.trim(); const error=document.getElementById('profile-error'); if (!username || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { error.classList.add('visible'); return; } error.classList.remove('visible'); localStorage.setItem('erudix-profile-v2', JSON.stringify({ username, mail, interests:[...selectedInterests], regions:[...selectedRegions], freeRegions:document.getElementById('regions').value.trim() })); document.getElementById('profile-screen').classList.remove('active'); document.getElementById('request-screen').classList.add('active'); window.scrollTo({top:0, behavior:'smooth'}); });
+      document.getElementById('back').addEventListener('click', () => { document.getElementById('request-screen').classList.remove('active'); document.getElementById('profile-screen').classList.add('active'); window.scrollTo({top:0, behavior:'smooth'}); });
+      let duration=10; document.querySelectorAll('[data-duration]').forEach(button => button.addEventListener('click', () => { duration=Number(button.dataset.duration); document.querySelectorAll('[data-duration]').forEach(item=>item.classList.remove('active')); button.classList.add('active'); }));
+      document.getElementById('start').addEventListener('click', () => { const request=document.getElementById('topic').value.trim(); if (!request) { document.getElementById('topic').focus(); return; } document.getElementById('result-text').textContent='Requête enregistrée : « '+request+' ». Une future version de l’agent IA préparera une session de '+duration+' minutes à partir de cette demande.'; document.getElementById('result').classList.add('visible'); });
     }());
   </script>
 </body>
