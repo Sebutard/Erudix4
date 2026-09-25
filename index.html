@@ -3,13 +3,233 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Erudix V5 — explorer les savoirs qui t'intéressent."><title>Erudix V5 — Explorer les savoirs</title>
 <style>
-:root{--ink:#17253b;--muted:#64748b;--blue:#315ca8;--blue-dark:#203f7b;--gold:#e9ad45;--paper:#fff;--line:#dce5f0;--soft:#edf4ff;--shadow:0 22px 60px #17253b1c}*{box-sizing:border-box}body{margin:0;min-width:320px;color:var(--ink);font:16px/1.5 Arial,sans-serif;background:#111b4d url('sky-library.svg') center top/cover fixed no-repeat;overflow-x:hidden}body:after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(180deg,#07103344 0%,#111b4d55 48%,#f7f1dfaa 100%);pointer-events:none}.app{width:min(100%,760px);margin:auto;padding:24px 16px 42px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.brand{display:flex;align-items:center;gap:11px;color:#fff;font-weight:900;font-size:1.28rem;letter-spacing:-.03em;text-shadow:0 2px 12px #071033}.logo{display:grid;place-items:center;width:43px;height:43px;border-radius:15px;background:linear-gradient(145deg,#3f76c8,#203f7b);box-shadow:0 8px 20px #07103366;color:#fff}.logo svg{width:30px;height:30px}.badge,.meta{padding:7px 11px;border-radius:999px;background:#ffffffd9;border:1px solid #fff;color:var(--blue-dark);font-size:.77rem;font-weight:800;backdrop-filter:blur(8px)}.screen{display:none;animation:appear .25s ease}.screen.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.eyebrow{color:#fff;font-size:.76rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-shadow:0 2px 8px #071033}h1{max-width:670px;margin:11px 0 30px;color:#fff;text-shadow:0 3px 18px #071033;font-size:clamp(2.1rem,8vw,3.7rem);line-height:1.04;letter-spacing:-.055em}h2{margin:0 0 8px;font-size:1.25rem}h3{margin:0 0 10px;font-size:1.05rem}p{margin:0}.muted{color:var(--muted)}.card{padding:23px;border:1px solid #fff;border-radius:28px;background:#fffffff2;box-shadow:var(--shadow);backdrop-filter:blur(10px)}.form-group{margin-bottom:20px}label{display:block;margin-bottom:8px;color:var(--muted);font-size:.9rem;font-weight:800}input{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);outline:0}input:focus{border-color:var(--blue);box-shadow:0 0 0 4px #dbe8ff}.two{display:grid;gap:16px}.pills{display:flex;flex-wrap:wrap;gap:9px}.pill,.duration,.secondary{padding:10px 13px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink)}.pill.selected,.duration.active{border-color:var(--blue);background:var(--soft);color:var(--blue-dark);font-weight:800}.progress{height:8px;margin-bottom:22px;border-radius:99px;background:#e5edf8;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--gold))}.durations{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.duration{border-radius:12px;font-weight:800;padding:12px 5px}.primary{width:100%;padding:15px 18px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;font-weight:900;box-shadow:0 8px 18px #315ca833}.secondary{font-weight:800}.error{display:none;margin:8px 0;color:#b84c52;font-size:.88rem}.error.visible{display:block}.session-meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.resource-list{display:grid;gap:18px;margin-top:20px}.resource{overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 10px 28px #17253b10}.resource-preview{display:grid;place-items:center;min-height:175px;padding:24px;background:linear-gradient(135deg,#e5f0ff,#cfe0ff);color:var(--blue-dark);text-align:center}.resource-preview.youtube{background:linear-gradient(135deg,#ffe8e8,#ffcaca)}.preview-icon{display:grid;place-items:center;width:88px;height:64px;border-radius:18px;background:#fff;box-shadow:0 8px 20px #17253b20}.preview-icon svg{width:57px;height:57px}.preview-label{margin-top:12px;font-size:.78rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.body{padding:18px}.type{color:var(--blue);font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.title{margin:8px 0;font-size:1.15rem}.info{color:var(--muted);font-size:.88rem}.reason{margin-top:14px;padding:12px;border-left:4px solid var(--gold);border-radius:9px;background:#fff8e9;font-size:.9rem}.link{display:inline-block;margin-top:14px;color:var(--blue-dark);font-weight:900;text-decoration:underline}.notice{margin-top:18px;padding:12px 14px;border:1px dashed #cbd8e8;border-radius:12px;color:var(--muted);font-size:.85rem}.loading{padding:24px;text-align:center;color:var(--blue-dark)}footer{margin-top:22px;color:#fff;text-align:center;font-size:.82rem;text-shadow:0 2px 8px #071033}@media(min-width:600px){.two{grid-template-columns:1fr 1fr}}
+:root{--ink:#17253b;--muted:#64748b;--blue:#315ca8;--blue-dark:#203f7b;--gold:#e9ad45;--paper:#fff;--line:#dce5f0;--soft:#edf4ff;--shadow:0 22px 60px rgba(23,37,59,.14)}
+*{box-sizing:border-box}html,body{min-height:100%;margin:0}body{position:relative;color:var(--ink);font:16px/1.5 Arial,sans-serif;background:linear-gradient(180deg,rgba(7,16,51,.3),rgba(17,27,77,.25)),url('./sky-library.svg') center center/cover no-repeat fixed;overflow-x:hidden}body:before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,16,51,.25) 0%,rgba(9,15,40,.18) 42%,rgba(247,241,223,.18) 100%)}
+.app{position:relative;z-index:1;width:min(100%,760px);margin:auto;padding:24px 16px 42px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.brand{display:flex;align-items:center;gap:11px;color:#fff;font-weight:900;font-size:1.28rem;letter-spacing:-.03em;text-shadow:0 2px 12px rgba(7,16,51,.8)}.logo{display:grid;place-items:center;width:43px;height:43px;border-radius:15px;background:linear-gradient(145deg,#3f76c8,#203f7b);box-shadow:0 8px 20px rgba(7,16,51,.4);color:#fff}.logo svg{width:30px;height:30px}.badge,.meta{padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.8);color:var(--blue-dark);font-size:.77rem;font-weight:800}.screen{display:none;animation:appear .25s ease}.screen.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}.eyebrow{color:#fff;font-size:.76rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;text-shadow:0 2px 8px rgba(7,16,51,.8)}h1{max-width:670px;margin:11px 0 30px;color:#fff;text-shadow:0 3px 18px rgba(7,16,51,.8);font-size:clamp(2.1rem,8vw,3.7rem);line-height:1.04;letter-spacing:-.055em}h2{margin:0 0 8px;font-size:1.25rem}h3{margin:0 0 10px;font-size:1.05rem}p{margin:0}.muted{color:var(--muted)}.card{padding:23px;border:1px solid rgba(255,255,255,.7);border-radius:28px;background:rgba(255,255,255,.9);box-shadow:var(--shadow);backdrop-filter:blur(10px)}.form-group{margin-bottom:20px}label{display:block;margin-bottom:8px;color:var(--muted);font-size:.9rem;font-weight:800}input{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);outline:0}input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(49,92,168,.12)}.two{display:grid;gap:16px}.pills{display:flex;flex-wrap:wrap;gap:9px}.pill,.duration,.secondary{padding:10px 13px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink)}.pill.selected,.duration.active{border-color:var(--blue);background:var(--soft);color:var(--blue-dark);font-weight:800}.progress{height:8px;margin-bottom:22px;border-radius:99px;background:#e5edf8;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--gold))}.durations{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.duration{border-radius:12px;font-weight:800;padding:12px 5px}.primary{width:100%;padding:15px 18px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;font-weight:900;box-shadow:0 8px 18px rgba(49,92,168,.3)}.secondary{font-weight:800}.error{display:none;margin:8px 0;color:#b84c52;font-size:.88rem}.error.visible{display:block}.session-meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.resource-list{display:grid;gap:18px;margin-top:20px}.resource{overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(23,37,59,.08)}.resource-preview{display:grid;place-items:center;min-height:170px;padding:20px;background:linear-gradient(135deg,#e5f0ff,#cfe0ff);color:var(--blue-dark);text-align:center}.resource-preview.youtube{background:linear-gradient(135deg,#ffe8e8,#ffcaca)}.preview-icon{display:grid;place-items:center;width:88px;height:64px;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(23,37,59,.15)}.preview-icon svg{width:57px;height:57px}.preview-label{margin-top:10px;font-size:.78rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.body{padding:18px}.type{color:var(--blue);font-size:.75rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}.title{margin:8px 0;font-size:1.15rem}.info{color:var(--muted);font-size:.88rem}.reason{margin-top:14px;padding:12px;border-left:4px solid var(--gold);border-radius:9px;background:#fff8e9;font-size:.9rem}.link{display:inline-block;margin-top:14px;color:var(--blue-dark);font-weight:900;text-decoration:underline}.notice{margin-top:18px;padding:12px 14px;border:1px dashed #cbd8e8;border-radius:12px;color:var(--muted);font-size:.85rem}.loading{padding:24px;text-align:center;color:var(--blue-dark)}footer{margin-top:22px;color:#fff;text-align:center;font-size:.82rem;text-shadow:0 2px 8px rgba(7,16,51,.8)}@media(min-width:600px){.two{grid-template-columns:1fr 1fr}}
 </style>
 </head>
-<body><main class="app"><header><div class="brand"><span class="logo" aria-label="Symbole du savoir"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 31V10M20 12C16 7 10 8 7 10v20c4-2 9-2 13 2M20 12c4-5 10-4 13-2v20c-4-2-9-2-13 2" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="7" r="3" fill="#f5c96d"/></svg></span><span>Erudix</span></div><span class="badge">V5 · Prototype</span></header>
-<section id="profile" class="screen active"><div class="hero"><div class="eyebrow">Étape 1 sur 3</div><h1>Construisons ton espace d’apprentissage.</h1></div><div class="card"><div class="progress"><span style="width:33%"></span></div><div class="two form-group"><div><label for="username">Username</label><input id="username" placeholder="Ton prénom ou pseudo"></div><div><label for="mail">Mail</label><input id="mail" type="email" placeholder="ton@email.com"></div></div><div class="form-group"><h3>Centres d’intérêt</h3><div class="pills" id="interests"></div></div><div class="form-group"><label for="regions">Pays ou régions qui t’intéressent</label><input id="regions" placeholder="Ex. : Portugal, Afrique de l’Ouest..."></div><div class="form-group"><h3>Régions suggérées</h3><div class="pills" id="regionPills"></div></div><p id="profileError" class="error">Renseigne un username et une adresse mail valide.</p><button id="continue" class="primary">Continuer</button></div></section>
-<section id="request" class="screen"><div class="hero"><div class="eyebrow">Étape 2 sur 3</div><h1>Que veux-tu apprendre aujourd’hui&nbsp;?</h1></div><div class="card"><h2>Créer une session</h2><div class="form-group"><label for="topic">Sujet à approfondir</label><input id="topic" placeholder="Ex. : Ronaldo, son parcours et son influence..."></div><div class="form-group"><label>Temps réellement disponible</label><div class="durations"><button class="duration" data-min="5">5 min</button><button class="duration active" data-min="10">10 min</button><button class="duration" data-min="15">15 min</button><button class="duration" data-min="30">30 min</button></div></div><button id="search" class="primary">Préparer ma session</button><button id="back" class="secondary" style="width:100%;margin-top:12px">Modifier mon profil</button></div></section>
-<section id="resources" class="screen"><div class="hero"><div class="eyebrow">Étape 3 sur 3</div><h1 id="sessionTitle"></h1><p class="muted" id="sessionIntro"></p></div><div class="card"><div class="session-meta"><span id="timeMeta" class="meta"></span><span id="countMeta" class="meta"></span></div><div id="resourceList" class="resource-list"></div><div class="notice">Les visuels indiquent le type de ressource : logo YouTube pour une vidéo et icône de livre pour un article.</div><button id="newSearch" class="secondary" style="width:100%;margin-top:18px">Nouvelle recherche</button></div></section><footer>V5 · Prototype universitaire · Explorer, comprendre, apprendre.</footer></main>
+<body>
+<main class="app">
+<header>
+  <div class="brand"><span class="logo" aria-label="Symbole du savoir"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 31V10M20 12C16 7 10 8 7 10v20c4-2 9-2 13 2M20 12c4-5 10-4 13-2v20c-4-2-9-2-13 2" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="7" r="3" fill="#f5c96d"/></svg></span><span>Erudix</span></div>
+  <span class="badge">V5 · Prototype</span>
+</header>
+
+<section id="profile" class="screen active">
+  <div class="hero"><div class="eyebrow">Étape 1 sur 3</div><h1>Construisons ton espace d’apprentissage.</h1></div>
+  <div class="card">
+    <div class="progress"><span style="width:33%"></span></div>
+    <div class="two form-group">
+      <div><label for="username">Username</label><input id="username" placeholder="Ton prénom ou pseudo"></div>
+      <div><label for="mail">Mail</label><input id="mail" type="email" placeholder="ton@email.com"></div>
+    </div>
+    <div class="form-group"><h3>Centres d’intérêt</h3><div class="pills" id="interests"></div></div>
+    <div class="form-group"><label for="regions">Pays ou régions qui t’intéressent</label><input id="regions" placeholder="Ex. : Portugal, Afrique de l’Ouest..."></div>
+    <div class="form-group"><h3>Régions suggérées</h3><div class="pills" id="regionPills"></div></div>
+    <p id="profileError" class="error">Renseigne un username et une adresse mail valide.</p>
+    <button id="continue" class="primary">Continuer</button>
+  </div>
+</section>
+
+<section id="request" class="screen">
+  <div class="hero"><div class="eyebrow">Étape 2 sur 3</div><h1>Que veux-tu apprendre aujourd’hui&nbsp;?</h1></div>
+  <div class="card">
+    <h2>Créer une session</h2>
+    <div class="form-group"><label for="topic">Sujet à approfondir</label><input id="topic" placeholder="Ex. : Ronaldo, son parcours et son influence..."></div>
+    <div class="form-group"><label>Temps réellement disponible</label>
+      <div class="durations">
+        <button class="duration" data-min="5" type="button">5 min</button>
+        <button class="duration active" data-min="10" type="button">10 min</button>
+        <button class="duration" data-min="15" type="button">15 min</button>
+        <button class="duration" data-min="30" type="button">30 min</button>
+      </div>
+    </div>
+    <button id="search" class="primary" type="button">Préparer ma session</button>
+    <button id="back" class="secondary" type="button" style="width:100%;margin-top:12px">Modifier mon profil</button>
+  </div>
+</section>
+
+<section id="resources" class="screen">
+  <div class="hero"><div class="eyebrow">Étape 3 sur 3</div><h1 id="sessionTitle"></h1><p class="muted" id="sessionIntro" style="color:#fff;text-shadow:0 2px 8px rgba(7,16,51,.8)"></p></div>
+  <div class="card">
+    <div class="session-meta"><span id="timeMeta" class="meta"></span><span id="countMeta" class="meta"></span></div>
+    <div id="resourceList" class="resource-list"></div>
+    <div class="notice">Les ressources sont sélectionnées pour remplir au mieux le temps demandé, avec une combinaison de vidéos et d’articles.</div>
+    <button id="newSearch" class="secondary" type="button" style="width:100%;margin-top:18px">Nouvelle recherche</button>
+  </div>
+</section>
+
+<footer>V5 · Explorer, comprendre, apprendre.</footer>
+</main>
+
 <script>
-(()=>{const $=id=>document.getElementById(id),interests=['Arts','Littérature','Sports','Écologie','Langues','Religions','Politique','Santé','Sciences sociales'],regions=['Amérique latine','Afrique','Europe','Amérique du Nord','Asie','Moyen-Orient','Océanie'];let selectedDuration=10;const selectedInterests=new Set(),selectedRegions=new Set();function pills(items,target,set){items.forEach(text=>{const b=document.createElement('button');b.type='button';b.className='pill';b.textContent=text;b.onclick=()=>{set.has(text)?set.delete(text):set.add(text);b.classList.toggle('selected',set.has(text))};target.appendChild(b)})}function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');scrollTo({top:0,behavior:'smooth'})}function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}function profile(){try{return JSON.parse(localStorage.getItem('erudix-profile-v5'))||{}}catch{return {}}}function preview(type){if(type==='video')return '<div class="resource-preview youtube"><div><div class="preview-icon"><svg viewBox="0 0 72 50" aria-hidden="true"><rect x="2" y="2" width="68" height="46" rx="12" fill="#f00"/><path d="M30 14l18 11-18 11z" fill="#fff"/></svg></div><div class="preview-label">Vidéo YouTube</div></div></div>';return '<div class="resource-preview"><div><div class="preview-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 12a6 6 0 016-6h29a9 9 0 019 9v39H18a8 8 0 01-8-8V12z" fill="#315ca8"/><path d="M18 6h27a9 9 0 019 9v39H18a8 8 0 010-16h36" fill="none" stroke="#203f7b" stroke-width="4"/><path d="M23 22h22M23 31h22M23 40h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div><div class="preview-label">Article à lire</div></div></div>'}pills(interests,$('interests'),selectedInterests);pills(regions,$('regionPills'),selectedRegions);$('continue').onclick=()=>{const name=$('username').value.trim(),mail=$('mail').value.trim();if(!name||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)){$('profileError').classList.add('visible');return}$('profileError').classList.remove('visible');localStorage.setItem('erudix-profile-v5',JSON.stringify({name,mail,interests:[...selectedInterests],regions:[...selectedRegions],freeRegions:$('regions').value.trim()}));show('request')};document.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{selectedDuration=Number(b.dataset.min);document.querySelectorAll('[data-min]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});$('back').onclick=()=>show('profile');$('newSearch').onclick=()=>show('request');function demo(topic,budget){const id='aqz-KE-bpKQ',item={type:'video',kind:'Vidéo YouTube · démonstration',title:`Vidéo YouTube de démonstration pour « ${topic} »`,source:'YouTube',minutes:Math.min(4,Math.max(2,Math.ceil(budget*.4))),embed:`https://www.youtube.com/embed/${id}`,url:`https://www.youtube.com/watch?v=${id}`,reason:'Mode démonstration : cette ressource sera remplacée par une vidéo trouvée pour ce sujet lorsque l’API est active.'};return{items:[item],total:item.minutes}}function render(data,topic,budget){$('sessionTitle').textContent='Connais mieux '+topic;$('sessionIntro').textContent=`Session personnalisée sur « ${topic} », avec un budget de ${budget} minutes.`;const items=data.resources||data.items||[];$('timeMeta').textContent=`${data.estimatedMinutes||data.total||0} / ${budget} min`;$('countMeta').textContent=`${items.length} ressource${items.length>1?'s':''}`;$('resourceList').innerHTML=items.map(r=>{const minutes=Number(r.durationMinutes||r.minutes||1),kind=r.kind||(r.type==='video'?'Vidéo YouTube':r.type==='opinion'?'Article d’opinion':'Article journalistique');if(r.type==='video')return `<article class="resource">${preview('video')}<div class="body"><div class="type">${esc(kind)}</div><h2 class="title">${esc(r.title)}</h2><div class="info">Source : ${esc(r.source||'YouTube')} · Durée : ${minutes} min${r.language?' · Langue : '+esc(r.language):''}</div><div class="reason"><strong>Pourquoi ce choix&nbsp;?</strong><br>${esc(r.reason||'Vidéo sélectionnée selon le sujet et le temps disponible.')}</div><a class="link" href="${esc(r.url)}" target="_blank" rel="noopener">Regarder directement sur YouTube</a></div></article>`;return `<article class="resource">${preview('article')}<div class="body"><div class="type">${esc(kind)}</div><h2 class="title">${esc(r.title)}</h2><div class="info">Source : ${esc(r.source||'Média')} · Lecture estimée : ${minutes} min</div><div class="reason"><strong>Pourquoi ce choix&nbsp;?</strong><br>${esc(r.reason||'Article sélectionné selon le sujet et le temps disponible.')}</div><a class="link" href="${esc(r.url)}" target="_blank" rel="noopener">Lire l’article original</a></div></article>`}).join('')}async function requestSession(topic){const p=profile(),response=await fetch('/api/generate-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topic,durationMinutes:selectedDuration,language:'fr',interests:[...selectedInterests],regions:[...selectedRegions],profile:p})});if(!response.ok)throw new Error('API indisponible');return response.json()}$('search').onclick=async()=>{const topic=$('topic').value.trim();if(!topic){$('topic').focus();return}show('resources');$('sessionTitle').textContent='Recherche en cours…';$('sessionIntro').textContent='';$('resourceList').innerHTML='<div class="loading">Recherche des vidéos et articles…</div>';try{const data=await requestSession(topic);render(data,topic,selectedDuration)}catch(error){const fallback=demo(topic,selectedDuration);render(fallback,topic,selectedDuration);$('resourceList').insertAdjacentHTML('afterbegin','<div class="notice">Mode démonstration : le backend ou les clés API ne sont pas accessibles.</div>')}}})();
-</script></body></html>
+(() => {
+  const $ = id => document.getElementById(id);
+  const interests = ['Arts', 'Littérature', 'Sports', 'Écologie', 'Langues', 'Religions', 'Politique', 'Santé', 'Sciences sociales'];
+  const regions = ['Amérique latine', 'Afrique', 'Europe', 'Amérique du Nord', 'Asie', 'Moyen-Orient', 'Océanie'];
+  let duration = 10;
+  const chosenInterests = new Set();
+  const chosenRegions = new Set();
+
+  function pills(items, target, set) {
+    items.forEach(text => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'pill';
+      b.textContent = text;
+      b.addEventListener('click', () => {
+        if (set.has(text)) set.delete(text); else set.add(text);
+        b.classList.toggle('selected', set.has(text));
+      });
+      target.appendChild(b);
+    });
+  }
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    $(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function esc(value) {
+    return String(value || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
+  }
+
+  function preview(type) {
+    if (type === 'video') {
+      return '<div class="resource-preview youtube"><div><div class="preview-icon"><svg viewBox="0 0 72 50" aria-hidden="true"><rect x="2" y="2" width="68" height="46" rx="12" fill="#f00"/><path d="M30 14l18 11-18 11z" fill="#fff"/></svg></div><div class="preview-label">Vidéo YouTube</div></div></div>';
+    }
+    return '<div class="resource-preview"><div><div class="preview-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 12a6 6 0 016-6h29a9 9 0 019 9v39H18a8 8 0 01-8-8V12z" fill="#315ca8"/><path d="M18 6h27a9 9 0 019 9v39H18a8 8 0 010-16h36" fill="none" stroke="#203f7b" stroke-width="4"/><path d="M23 22h22M23 31h22M23 40h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div><div class="preview-label">Article à lire</div></div></div>';
+  }
+
+  pills(interests, $('interests'), chosenInterests);
+  pills(regions, $('regionPills'), chosenRegions);
+
+  $('continue').addEventListener('click', () => {
+    const username = $('username').value.trim();
+    const mail = $('mail').value.trim();
+    const error = $('profileError');
+    if (!username || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      error.classList.add('visible');
+      return;
+    }
+    error.classList.remove('visible');
+    localStorage.setItem('erudix-profile-v5', JSON.stringify({ username, mail, interests: [...chosenInterests], regions: [...chosenRegions] }));
+    showScreen('request');
+  });
+
+  document.querySelectorAll('[data-min]').forEach(button => {
+    button.addEventListener('click', () => {
+      duration = Number(button.dataset.min);
+      document.querySelectorAll('[data-min]').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+    });
+  });
+
+  $('back').addEventListener('click', () => showScreen('profile'));
+  $('newSearch').addEventListener('click', () => showScreen('request'));
+
+  function renderResources(data, topic) {
+    const items = Array.isArray(data && data.resources) ? data.resources : [];
+    if (!items.length) {
+      $('sessionTitle').textContent = 'Aucune ressource trouvée';
+      $('sessionIntro').textContent = 'Essayez un autre sujet ou une autre durée.';
+      $('timeMeta').textContent = '0 / ' + duration + ' min';
+      $('countMeta').textContent = '0 ressource';
+      $('resourceList').innerHTML = '<div class="notice">Aucune ressource correspondante n’a été trouvée pour ce sujet.</div>';
+      return;
+    }
+
+    const total = Number(data.estimatedMinutes || items.reduce((sum, item) => sum + Number(item.durationMinutes || 0), 0));
+    $('sessionTitle').textContent = 'Connais mieux ' + topic;
+    $('sessionIntro').textContent = 'Session personnalisée en ' + duration + ' minutes — mélange de vidéos et d’articles.';
+    $('timeMeta').textContent = total + ' / ' + duration + ' min';
+    $('countMeta').textContent = items.length + ' ressource' + (items.length > 1 ? 's' : '');
+
+    $('resourceList').innerHTML = items.map(item => {
+      const type = item.type === 'video' ? 'Vidéo YouTube' : item.type === 'opinion' ? 'Article d’opinion' : 'Article journalistique';
+      const label = item.type === 'video' ? 'Regarder directement sur YouTube' : 'Lire l’article original';
+      const minutes = Number(item.durationMinutes || 0);
+      return `
+        <article class="resource">
+          ${preview(item.type)}
+          <div class="body">
+            <div class="type">${esc(type)}</div>
+            <h2 class="title">${esc(item.title)}</h2>
+            <div class="info">Source : ${esc(item.source || 'Source')} · Durée : ${minutes} min</div>
+            <div class="reason"><strong>Pourquoi ce choix ?</strong><br>${esc(item.reason || 'Ressource sélectionnée pour sa pertinence et son adéquation au temps disponible.')}</div>
+            <a class="link" href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${label}</a>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function demoResources(topic, selectedDuration) {
+    const subject = String(topic || 'ce sujet').replace(/\s+/g, ' ');
+    const items = [
+      { type: 'video', title: `Vidéo d’introduction sur « ${subject} »`, source: 'YouTube', durationMinutes: 3, url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', reason: 'Vidéo de démonstration, pour présenter le type de ressource attendu.' },
+      { type: 'journalism', title: `Les points essentiels pour comprendre ${subject}`, source: 'Article de démonstration', durationMinutes: 3, url: `https://www.google.com/search?q=${encodeURIComponent(subject)}`, reason: 'Article journalistique de démonstration pour compléter l’angle visuel.' },
+      { type: 'opinion', title: `${subject} : analyse et points de vue`, source: 'Article de démonstration', durationMinutes: 3, url: `https://www.google.com/search?q=${encodeURIComponent(subject)}`, reason: 'Article d’opinion pour élargir la perspective et compléter la session.' },
+      { type: 'video', title: `Vidéo complémentaire sur « ${subject} »`, source: 'YouTube', durationMinutes: 2, url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE', reason: 'Deuxième ressource vidéo pour mieux remplir le budget de temps.' }
+    ];
+
+    const selected = [];
+    let total = 0;
+    const add = item => {
+      if (!item) return false;
+      if (total + Number(item.durationMinutes || 0) > selectedDuration) return false;
+      selected.push(item);
+      total += Number(item.durationMinutes || 0);
+      return true;
+    };
+
+    add(items.find(i => i.type === 'video'));
+    add(items.find(i => i.type === 'journalism'));
+    add(items.find(i => i.type === 'opinion'));
+    for (const item of items) {
+      if (selected.length >= 4) break;
+      add(item);
+    }
+
+    return { estimatedMinutes: total, resources: selected };
+  }
+
+  $('search').addEventListener('click', async () => {
+    const topic = $('topic').value.trim();
+    if (!topic) {
+      $('topic').focus();
+      return;
+    }
+
+    showScreen('resources');
+    $('sessionTitle').textContent = 'Recherche en cours…';
+    $('sessionIntro').textContent = '';
+    $('resourceList').innerHTML = '<div class="loading">Recherche des vidéos et articles adaptés au temps choisi…</div>';
+
+    try {
+      const response = await fetch('/api/generate-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic,
+          durationMinutes: duration,
+          language: 'fr',
+          interests: [...chosenInterests],
+          regions: [...chosenRegions]
+        })
+      });
+
+      if (!response.ok) throw new Error('API unavailable');
+      const data = await response.json();
+      renderResources(data, topic);
+    } catch (error) {
+      const fallback = demoResources(topic, duration);
+      renderResources(fallback, topic);
+      $('resourceList').insertAdjacentHTML('beforeend', '<div class="notice" style="margin-top:12px">Mode démonstration : le backend n’est pas actif ou les clés API ne sont pas configurées.</div>');
+    }
+  });
+})();
+</script>
+</body>
+</html>
