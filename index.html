@@ -127,6 +127,58 @@ h2{margin:0 0 8px;font-size:1.25rem}h3{margin:0 0 10px;font-size:1.05rem}p{margi
     return '<div class="resource-preview"><div><div class="preview-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 12a6 6 0 016-6h29a9 9 0 019 9v39H18a8 8 0 01-8-8V12z" fill="#315ca8"/><path d="M18 6h27a9 9 0 019 9v39H18a8 8 0 010-16h36" fill="none" stroke="#203f7b" stroke-width="4"/><path d="M23 22h22M23 31h22M23 40h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div><div class="preview-label">Article à lire</div></div></div>';
   }
 
+  const resourceBank = [
+    { type: 'video', title: 'Les grandes idées du sujet en 3 minutes', source: 'YouTube', durationMinutes: 3, url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', reason: 'Une intro rapide pour poser les bases et activer la curiosité.' },
+    { type: 'video', title: 'Une analyse plus profonde du sujet', source: 'YouTube', durationMinutes: 4, url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE', reason: 'Un deuxième axe pour aller un peu plus loin sans trop s’étendre.' },
+    { type: 'journalism', title: 'Les faits, le contexte et les chiffres clés', source: 'Article journalistique', durationMinutes: 4, url: 'https://www.lemonde.fr/', reason: 'Un article de fond pour donner un cadre fiable et de lecture claire.' },
+    { type: 'journalism', title: 'Le sujet vu par les médias et la presse internationale', source: 'Article journalistique', durationMinutes: 5, url: 'https://www.theguardian.com/', reason: 'Un point de vue médiatique pour élargir le champ d’analyse.' },
+    { type: 'opinion', title: 'Un point de vue critique et argumenté', source: 'Article d’opinion', durationMinutes: 4, url: 'https://www.nytimes.com/', reason: 'Un angle plus personnel pour enrichir l’interprétation du sujet.' },
+    { type: 'opinion', title: 'Pourquoi le sujet intéresse aujourd’hui', source: 'Article d’opinion', durationMinutes: 3, url: 'https://www.bbc.com/news', reason: 'Une lecture plus actuelle pour relier le sujet au contexte du moment.' },
+    { type: 'video', title: 'Le sujet expliqué avec un cadre visuel', source: 'YouTube', durationMinutes: 5, url: 'https://www.youtube.com/watch?v=ScMzIvxBSi4', reason: 'Une ressource visuelle qui aide à synthétiser le sujet au plus vite.' },
+    { type: 'journalism', title: 'Comprendre le sujet à travers plusieurs sources', source: 'Article journalistique', durationMinutes: 6, url: 'https://www.france24.com/fr/', reason: 'Un article plus long pour mettre le sujet dans une perspective plus large.' }
+  ];
+
+  function matchResources(topic) {
+    const query = String(topic || '').trim().toLowerCase();
+    return resourceBank.map(item => {
+      const boost = query ? (item.title.toLowerCase().includes(query) ? 2 : 1) : 1;
+      return { ...item, matchScore: boost };
+    }).sort((a, b) => b.matchScore - a.matchScore || a.durationMinutes - b.durationMinutes);
+  }
+
+  function buildSession(topic, selectedDuration) {
+    const pool = matchResources(topic);
+    const selected = [];
+    let total = 0;
+
+    const addItem = item => {
+      if (!item) return false;
+      if (total + Number(item.durationMinutes || 0) > selectedDuration) return false;
+      selected.push(item);
+      total += Number(item.durationMinutes || 0);
+      return true;
+    };
+
+    const required = ['video', 'journalism', 'opinion'];
+    required.forEach(type => {
+      const match = pool.find(item => item.type === type && addItem(item));
+      if (match) {
+      }
+    });
+
+    const also = pool.filter(item => !selected.some(s => s.title === item.title));
+    for (const item of also) {
+      if (selected.length >= 5) break;
+      addItem(item);
+    }
+
+    if (!selected.length) {
+      return { estimatedMinutes: 0, resources: [] };
+    }
+
+    return { estimatedMinutes: total, resources: selected };
+  }
+
   pills(interests, $('interests'), chosenInterests);
   pills(regions, $('regionPills'), chosenRegions);
 
@@ -190,37 +242,7 @@ h2{margin:0 0 8px;font-size:1.25rem}h3{margin:0 0 10px;font-size:1.05rem}p{margi
     }).join('');
   }
 
-  function demoResources(topic, selectedDuration) {
-    const subject = String(topic || 'ce sujet').replace(/\s+/g, ' ');
-    const items = [
-      { type: 'video', title: `Vidéo d’introduction sur « ${subject} »`, source: 'YouTube', durationMinutes: 3, url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', reason: 'Vidéo de démonstration, pour présenter le type de ressource attendu.' },
-      { type: 'journalism', title: `Les points essentiels pour comprendre ${subject}`, source: 'Article de démonstration', durationMinutes: 3, url: `https://www.google.com/search?q=${encodeURIComponent(subject)}`, reason: 'Article journalistique de démonstration pour compléter l’angle visuel.' },
-      { type: 'opinion', title: `${subject} : analyse et points de vue`, source: 'Article de démonstration', durationMinutes: 3, url: `https://www.google.com/search?q=${encodeURIComponent(subject)}`, reason: 'Article d’opinion pour élargir la perspective et compléter la session.' },
-      { type: 'video', title: `Vidéo complémentaire sur « ${subject} »`, source: 'YouTube', durationMinutes: 2, url: 'https://www.youtube.com/watch?v=M7lc1UVf-VE', reason: 'Deuxième ressource vidéo pour mieux remplir le budget de temps.' }
-    ];
-
-    const selected = [];
-    let total = 0;
-    const add = item => {
-      if (!item) return false;
-      if (total + Number(item.durationMinutes || 0) > selectedDuration) return false;
-      selected.push(item);
-      total += Number(item.durationMinutes || 0);
-      return true;
-    };
-
-    add(items.find(i => i.type === 'video'));
-    add(items.find(i => i.type === 'journalism'));
-    add(items.find(i => i.type === 'opinion'));
-    for (const item of items) {
-      if (selected.length >= 4) break;
-      add(item);
-    }
-
-    return { estimatedMinutes: total, resources: selected };
-  }
-
-  $('search').addEventListener('click', async () => {
+  $('search').addEventListener('click', () => {
     const topic = $('topic').value.trim();
     if (!topic) {
       $('topic').focus();
@@ -232,27 +254,8 @@ h2{margin:0 0 8px;font-size:1.25rem}h3{margin:0 0 10px;font-size:1.05rem}p{margi
     $('sessionIntro').textContent = '';
     $('resourceList').innerHTML = '<div class="loading">Recherche des vidéos et articles adaptés au temps choisi…</div>';
 
-    try {
-      const response = await fetch('/api/generate-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          topic,
-          durationMinutes: duration,
-          language: 'fr',
-          interests: [...chosenInterests],
-          regions: [...chosenRegions]
-        })
-      });
-
-      if (!response.ok) throw new Error('API unavailable');
-      const data = await response.json();
-      renderResources(data, topic);
-    } catch (error) {
-      const fallback = demoResources(topic, duration);
-      renderResources(fallback, topic);
-      $('resourceList').insertAdjacentHTML('beforeend', '<div class="notice" style="margin-top:12px">Mode démonstration : le backend n’est pas actif ou les clés API ne sont pas configurées.</div>');
-    }
+    const data = buildSession(topic, duration);
+    renderResources(data, topic);
   });
 })();
 </script>
